@@ -1,0 +1,20 @@
+{
+  "name": "@rootcause/articles",
+  "version": "1.0.0",
+  "description": "Root Cause — Articles micro-app",
+  "scripts": {
+    "start": "vite build --watch",
+    "serve": "vite preview --port 3003",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "single-spa-react": "^6.0.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.1",
+    "vite": "^5.4.0"
+  }
+}

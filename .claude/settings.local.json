@@ -1,0 +1,37 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(java -version)",
+      "Bash(mvn -version)",
+      "Bash(npm -v)",
+      "Bash(mvn -q spring-boot:run -Dspring-boot.run.profiles=local)",
+      "Bash(echo \"started PID $!\")",
+      "Bash(curl -s http://localhost:8080/api/content/articles)",
+      "Bash(npm ls *)",
+      "Bash(npm run *)",
+      "Bash(npm start *)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:3003/mfe-articles.js)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:9000/)",
+      "Bash(kill %1 %2)",
+      "Bash(pkill -f \"vite --port 3003\")",
+      "Bash(tasklist)",
+      "Bash(taskkill //F //IM node.exe)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:9000/articles)",
+      "Bash(curl -s -I http://localhost:3003/mfe-articles.js)",
+      "Bash(curl -s http://localhost:9000/)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:9000/rootcause-root-config.js)",
+      "Bash(taskkill //F //IM java.exe)",
+      "Bash(find /c/Website/root-cause/src -maxdepth 3 -iname \"*home*\" -o -maxdepth 3 -iname \"*page*\" 2>&1 | grep -v node_modules | head -30)",
+      "Read(//c/Website/root-cause/**)",
+      "Bash(mkdir -p /c/Website/rootcause-v2/frontend/root-config/src/styles *)",
+      "Bash(cd /c/Website/rootcause-v2/frontend/root-config && ls node_modules | grep -i copy-webpack 2>&1; npm ls copy-webpack-plugin 2>&1)",
+      "Bash(npm install *)",
+      "Bash(node -e ' *)",
+      "Bash(mkdir -p /c/Website/rootcause-v2/frontend/mfe-fixes/src/data)",
+      "Bash(mvn -q -DskipTests clean package)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:3001/mfe-home.js)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:3004/mfe-fixes.js)",
+      "Bash(curl -sI http://localhost:3004/mfe-fixes.js)"
+    ]
+  }
+}

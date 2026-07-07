@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Root Cause Daily - Master DevOps. Get Hired.</title>
+  <meta name="description" content="Scenario-based interview prep for DevOps and DevSecOps engineers. Notes, scenario questions with model answers, and real production failure stories." />
+
+  <!--
+    Import Map — tells the browser WHERE to load each micro-app bundle from.
+
+    In local dev:  each micro-app runs its own Vite dev server on a different port.
+    In production: each URL points to the S3/CloudFront hosted bundle.
+
+    This is the KEY config that wires the shell to each micro-app.
+    You change URLs here when you deploy — the shell code itself never changes.
+  -->
+  <script type="importmap">
+    {
+      "imports": {
+        "single-spa":       "https://cdn.jsdelivr.net/npm/single-spa@6.0.3/lib/es2015/esm/single-spa.min.js",
+        "react":            "https://esm.sh/react@18.3.1",
+        "react-dom":        "https://esm.sh/react-dom@18.3.1",
+        "react-dom/client": "https://esm.sh/react-dom@18.3.1/client",
+        "single-spa-react": "https://esm.sh/single-spa-react@6.0.0",
+
+        "@rootcause/home":      "//localhost:3001/mfe-home.js",
+        "@rootcause/interview": "//localhost:3002/mfe-interview.js",
+        "@rootcause/articles":  "//localhost:3003/mfe-articles.js",
+        "@rootcause/fixes":     "//localhost:3004/mfe-fixes.js",
+        "@rootcause/payment":   "//localhost:3005/mfe-payment.js"
+      }
+    }
+  </script>
+
+  <!-- Reused verbatim from the legacy root-cause site for visual parity -->
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,600&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- ══ NAV (shared chrome, lives in the shell — not a single-spa app) ══ -->
+  <header class="site-header" id="site-header">
+    <div class="nav-logo-row">
+      <a href="/" class="logo">
+        <span class="logo-dot"></span>Root <span class="logo-accent">Cause</span>
+      </a>
+    </div>
+    <div class="nav-main-row">
+      <nav class="nav-main-links">
+        <a href="/" class="nml">Home</a>
+        <div class="nml-dd" id="nml-dd">
+          <a href="/interview-prep" class="nml nml--dd">Interview Prep &#9662;</a>
+          <div class="nml-dd-menu">
+            <div class="nml-dd-grid">
+              <a href="/interview-prep/linux" class="nml-dd-item"><span class="nml-dd-icon" style="background:#E8A838">LNX</span><span>Linux</span></a>
+              <a href="/interview-prep/docker" class="nml-dd-item"><span class="nml-dd-icon" style="background:#2496ED">DCK</span><span>Docker</span></a>
+              <a href="/interview-prep/kubernetes" class="nml-dd-item"><span class="nml-dd-icon" style="background:#326CE5">K8S</span><span>Kubernetes</span></a>
+              <a href="/interview-prep/aws" class="nml-dd-item"><span class="nml-dd-icon" style="background:#FF9900">AWS</span><span>AWS</span></a>
+              <a href="/interview-prep/cicd" class="nml-dd-item"><span class="nml-dd-icon" style="background:#2ECC71">CCD</span><span>CI/CD</span></a>
+              <a href="/interview-prep/monitoring" class="nml-dd-item"><span class="nml-dd-icon" style="background:#E6522C">MON</span><span>Monitoring</span></a>
+              <a href="/interview-prep/devsecops" class="nml-dd-item"><span class="nml-dd-icon" style="background:#9B59B6">SEC</span><span>DevSecOps</span></a>
+              <a href="/interview-prep/git" class="nml-dd-item"><span class="nml-dd-icon" style="background:#F05032">GIT</span><span>Git</span></a>
+            </div>
+            <div class="nml-dd-footer"><a href="/interview-prep">Browse all topics &rarr;</a></div>
+          </div>
+        </div>
+        <a href="/fixes" class="nml">Production Fixes</a>
+        <a href="/articles" class="nml">Articles</a>
+        <a href="/architectures" class="nml">Architectures</a>
+        <a href="/roadmap" class="nml">Roadmap</a>
+        <a href="/about" class="nml">About</a>
+      </nav>
+      <button class="nav-mobile-toggle" onclick="document.getElementById('site-header').classList.toggle('nav-open')" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <nav class="nav-mobile-menu">
+      <a href="/">Home</a>
+      <a href="/interview-prep">Interview Prep</a>
+      <a href="/interview-prep/linux">&#x2514; Linux</a>
+      <a href="/interview-prep/docker">&#x2514; Docker</a>
+      <a href="/interview-prep/kubernetes">&#x2514; Kubernetes</a>
+      <a href="/interview-prep/aws">&#x2514; AWS</a>
+      <a href="/interview-prep/cicd">&#x2514; CI/CD</a>
+      <a href="/interview-prep/monitoring">&#x2514; Monitoring</a>
+      <a href="/interview-prep/devsecops">&#x2514; DevSecOps</a>
+      <a href="/interview-prep/git">&#x2514; Git</a>
+      <a href="/fixes">Production Fixes</a>
+      <a href="/articles">Articles</a>
+      <a href="/architectures">Architectures</a>
+      <a href="/about">About</a>
+    </nav>
+  </header>
+
+  <main>
+    <!--
+      Each micro-app mounts into its own div.
+      Single-SPA shows/hides these based on the current URL.
+    -->
+    <div id="rc-home"></div>
+    <div id="rc-interview"></div>
+    <div id="rc-articles"></div>
+    <div id="rc-fixes"></div>
+    <div id="rc-payment"></div>
+  </main>
+
+  <!-- ══ FOOTER (shared chrome) ══ -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <a href="/" class="footer-logo">Root <span class="footer-logo-accent">Cause</span></a>
+        <p class="footer-tagline">Scenario-based interview prep for DevOps &amp; DevSecOps engineers. Notes, questions, and real failure stories.</p>
+        <div class="footer-social">
+          <a href="https://instagram.com/rootcausedaily" target="_blank" rel="noopener" class="footer-social-link">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+            @rootcausedaily
+          </a>
+        </div>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <h4 class="footer-col-head">Learn</h4>
+          <a href="/interview-prep/linux">Linux</a>
+          <a href="/interview-prep/docker">Docker</a>
+          <a href="/interview-prep/kubernetes">Kubernetes</a>
+          <a href="/interview-prep/aws">AWS</a>
+          <a href="/interview-prep/cicd">CI/CD</a>
+          <a href="/interview-prep/monitoring">Monitoring</a>
+          <a href="/interview-prep/devsecops">DevSecOps</a>
+          <a href="/interview-prep/git">Git</a>
+        </div>
+        <div class="footer-col">
+          <h4 class="footer-col-head">Interview Prep</h4>
+          <a href="/interview-prep">All Bundles</a>
+          <a href="/interview-prep/linux">Linux Bundle</a>
+          <a href="/architectures">Architectures</a>
+        </div>
+        <div class="footer-col">
+          <h4 class="footer-col-head">Connect</h4>
+          <a href="https://instagram.com/rootcausedaily" target="_blank" rel="noopener">Instagram</a>
+          <a href="mailto:rsutar.2408@gmail.com">Contact Us</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 Root Cause Daily</span>
+      <span class="footer-sep">&middot;</span>
+      <span>rootcausedaily.com</span>
+      <span class="footer-sep">&middot;</span>
+      <span>Made for DevOps engineers, by one</span>
+    </div>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,37 @@
+spring:
+  application:
+    name: content-service
+
+  # MySQL — article metadata (title, slug, date, tags)
+  datasource:
+    url: jdbc:mysql://localhost:3306/rootcause_content
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:root}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update   # auto-creates tables on first run; switch to 'validate' in prod
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+
+  # Cache — in-memory for local dev; swap for Redis in production
+  cache:
+    type: simple
+
+server:
+  port: 8080
+
+# AWS
+aws:
+  region: ap-south-1            # Mumbai region
+  s3:
+    content-bucket: ${S3_CONTENT_BUCKET:rootcause-content-dev}
+
+# Logging
+logging:
+  level:
+    com.rootcause: DEBUG
+    software.amazon.awssdk: WARN
