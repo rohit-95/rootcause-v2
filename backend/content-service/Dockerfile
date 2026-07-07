@@ -6,7 +6,7 @@ COPY pom.xml .
 
 RUN mvn dependency:go-offline -B
 
-COPY /src /src
+COPY src/ src/
 
 RUN mvn package -DskipTests -B
 
@@ -24,6 +24,9 @@ RUN chown appuser:appgroup app.jar
 
 USER appuser
 EXPOSE 8080
+
+HEALTHCHECK --interval=30s --timeout=5s --start-period=30s --retries=3 \
+  CMD wget -qO- http://localhost:8080/actuator/health || exit 1
 
 ARG GIT_SHA=unknown
 LABEL org.opencontainers.image.revision=$GIT_SHA
